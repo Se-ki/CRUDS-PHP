@@ -1,22 +1,34 @@
 <!-- READ -->
 <?php
 session_start();
-if (empty($_SESSION['email']) && empty($_SESSION['password'])) {
+if (empty($_SESSION['username']) && empty($_SESSION['password'])) {
     header('location: login-signup.php');
 }
-$num = 0;
+$i = 0;
 $search = '';
 require "./functions/database.php";
 $connection = connect();
 if (!empty($_GET['search'])) {
     $search = $_GET['search'];
 }
-$sql = "SELECT * FROM tbl_info WHERE id < 30 AND firstname LIKE '%$search%' OR lastname LIKE '%$search%' OR gender LIKE '$search' OR contact LIKE '%$search%' OR email LIKE '%$search%' OR password LIKE '%$search%'";
+$column = 'id';
+$sort = 'DESC';
+if (isset($_GET['column']) && isset($_GET['sort'])) {
+    $sort = $_GET['sort'];
+    $column = $_GET['column'];
+    if ($sort == 'ASC') {
+        $sort = 'DESC';
+    } else {
+        $sort = 'ASC';
+    }
+}
+$sql = "SELECT * FROM tbl_info WHERE firstname LIKE '%$search%' OR lastname LIKE '%$search%' OR gender LIKE '$search' OR contact LIKE '%$search%' OR email LIKE '%$search%' ORDER BY $column $sort";
 $query = mysqli_query($connection, $sql);
 
 if (isset($_GET['success'])) {
     echo "<script>alert('Updated!')</script>";
 }
+
 if (isset($_GET['delete'])) {
     echo "<script>alert('Deleted!')</script>";
 }
@@ -46,14 +58,23 @@ function is_empty($query, $search)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrapV5.3.0/bootstrap.min.css">
     <title>User |
-        <?php echo $_SESSION['firstname'] ?>
+        <?php echo $_SESSION['username'] ?>
     </title>
     <style>
+        body {
+            background-image: url('./img/hackermode.gif');
+            background-size: cover;
+        }
+
+        th td {
+            background-color: black;
+        }
+
         th {
-            color: pink;
+            color: black;
             font-weight: 900;
             text-align: center;
-            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         a {
@@ -63,77 +84,230 @@ function is_empty($query, $search)
 
         td,
         h5 {
+            color: white;
+        }
+
+        .th-row {
+            background-color: black;
+        }
+
+        .navbar {
+            background-color: transparent;
+        }
+
+        .nav-item:hover {
+            text-decoration: underline;
+            text-decoration-color: aliceblue;
+        }
+
+        .refresh:hover {
+            color: black;
+            border-radius: 5px;
+            background-color: aquamarine;
+        }
+
+        .refresh {
+            color: white;
+            border-radius: 5px;
+        }
+
+        #search {
+            background-color: transparent;
+        }
+
+        .form-control {
+            border-radius: 20px;
+        }
+
+        .btn {
+            border-radius: 20px;
+            border-color: white;
+        }
+
+        .btn:hover {
+            border-radius: 20px;
+            border-color: white;
+        }
+
+        .capz,
+        .session-name {
+            text-transform: capitalize;
+        }
+
+        .vis {
+            background-color: black;
+            color: white;
+        }
+
+        .table-header {
+            text-decoration: none;
+            color: white;
+        }
+
+        .table-header:hover {
+            text-decoration: underline;
             color: pink;
+        }
+
+        .num {
+            text-align: center;
+        }
+
+        #scroll {
+            overflow-y: scroll;
+            height: 415px;
+        }
+
+        .add-btn {
+            width: 100px;
+            border-radius: 5px;
+            margin-left: 5px;
         }
     </style>
 </head>
 
-<body style="background-color:black;">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <?php echo $_SESSION['firstname'] ?>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-5-strong"">
+        <div class=" container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-lg-0">
+                <a class="navbar-brand" href="#">
+                    Hi,
+                    <p class="session-name ms-2">
+                        <?php echo $_SESSION['firstname'] ?>
+                    </p>
+                </a>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./aboutus.php">About Us</a>
+                </li>
+            </ul>
+            <a style="text-decoration: none;" class="refresh mx-auto mr-2" href="main.php">
+                <button class="refresh" style="border:0px; color: black;" type="button" class="btn btn-dark">
+                    Refresh
+                </button>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./aboutus.php">About Us</a>
-                    </li>
-                </ul>
-                <a class="mx-auto mr-2" href=" main.php"><button type="button" class="btn btn-dark"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                            <path
-                                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                        </svg><br>Refresh</button></a>
-                <a class="btn btn-danger" href="./functions/logout.php">Logout</a>
-            </div>
+            <a class="btn btn-danger" href="./functions/logout.php">Logout</a>
+
+        </div>
         </div>
     </nav>
-    <form style="width:30rem" class="d-flex navbar-nav mx-auto mb-2 mt-3 mb-lg-2" role="search" action="" method="get">
-        <input class="form-control me-2" type="text" name="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" name="search-submit" type="submit">Search</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="./functions/add.php" method="post">
+                        <div class="form-floating mb-3">
+                            <input type="text" name="firstname" class="form-control" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Firstname</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" name="lastname" class="form-control" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Lastname</label>
+                        </div>
+                        <div class="row form-floating mb-3"">
+                        <div class=" col">
+                            <div class="form-control">
+                                <label for="female">Female</label>
+                                <input type="radio" name="gender" value="Female" id="female" required="">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-control">
+                                <label for="male">Male</label>
+                                <input type="radio" name="gender" value="Male" id="male" required="">
+                            </div>
+                        </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="contact" class="form-control" id="floatingInput"
+                        placeholder="name@example.com" maxlength="11">
+                    <label for="floatingInput">Contact Number</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="floatingInput"
+                        placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" name="save" class="btn btn-primary" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- end modal -->
+    <form class=" navbar-nav mx-auto mt-3 mb-lg-2" role="search" action="" method="get">
+        <div class="d-flex justify-content-center">
+            <div class="input-group mb-3 w-25">
+                <input class="form-control w-25" type="text" name="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-secondary w-20" id="button-addon2" class="btn btn-secondary" name="search-submit"
+                    type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
     </form>
-    <div class="table-responsive">
-        <table class="table table-bordered align-middle align-text-top ">
+    <!-- Button trigger modal -->
+    <a class="add-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add
+    </a>
+    <div class="table-responsive" id="scroll">
+        <table class="table table-bordered align-middle align-text-top">
             <thead>
-                <tr>
-                    <th row">ID</th>
-                    <th scope="col">Firstname</th>
-                    <th scope="col">Lastname</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Contact Number</th>
-                    <th scope="col">Email</th>
-                    <th colspan="2" scope="col">Action</th>
+                <tr class="th-row">
+                    <th scope="col"><a class="table-header" href="?column=id&sort=<?php echo $sort ?>">#</a></th>
+                    <th scope="col"><a class="table-header"
+                            href="?column=firstname&sort=<?php echo $sort ?>">Firstname</a></th>
+                    <th scope="col"><a class="table-header"
+                            href="?column=lastname&sort=<?php echo $sort ?>">Lastname</a></th>
+                    <th scope="col"><a class="table-header" href="?column=gender&sort=<?php echo $sort ?>">Gender</a>
+                    </th>
+                    <th scope="col"><a class="table-header" href="?column=contact&sort=<?php echo $sort ?>">Contact
+                            Number</a></th>
+                    <th scope="col"><a class="table-header" href="?column=email&sort=<?php echo $sort ?>">Email</a></th>
+                    <th colspan="2" scope="col" class="table-header">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="vis">
                 <?php if (!empty(mysqli_num_rows($query))) { ?>
                     <?php while ($row = search($query, $search)) { ?>
                         <tr>
-                            <th scope="row">
-                                <?php echo $num = $num + 1; ?>
-                            </th>
-                            <td>
+                            <td scope="row" class="num">
+                                <?php echo $i = $i + 1; ?>
+                            </td>
+                            <td class="capz">
                                 <?php echo $row['firstname'] ?>
                             </td>
-                            <td>
+                            <td class="capz">
                                 <?php echo $row['lastname'] ?>
                             </td>
-                            <td>
+                            <td class="capz">
                                 <?php echo $row['gender'] ?>
                             </td>
-                            <td>
+                            <td class="capz">
                                 <?php echo $row['contact'] ?>
                             </td>
-                            <td>
+                            <td class="email">
                                 <?php echo $row['email'] ?>
                             </td>
                             <td>
@@ -167,7 +341,7 @@ function is_empty($query, $search)
                 <?php } else { ?>
                 </tbody>
             </table>
-            <h4 style="color:pink; display: flex; justify-content:center;">Info not found!</h4>
+            <h4 style="color:seashell; display: flex; justify-content:center;">Info not found!</h4>
         <?php } ?>
     </div>
     <script src="./js/bootstrapV5.3.0/bootstrap.bundle.min.js"></script>

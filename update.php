@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
+if (empty($_SESSION['username']) && empty($_SESSION['password'])) {
     header('location: login-signup.php');
 }
 require "./functions/database.php";
@@ -30,11 +30,25 @@ $row = mysqli_fetch_assoc($query);
     <title>Update User:
         <?php echo $row['firstname'] ?>
     </title>
+    <style>
+        body {
+            background-image: url('./img/ricardo.gif');
+            background-repeat: repeat;
+        }
+
+        .card {
+            background-color: transparent;
+        }
+
+        .cancel:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
-<body style="background-color:black;">
+<body>
     <div class="card"
-        style="width: 18rem; position: relative; left: 40%; top: 40px; background-color:black; box-shadow: 0px 0px 2px 2px white;">
+        style="width: 18rem; position: relative; left: 40%; top: 40px; box-shadow: 0px 0px 2px 2px white;">
         <div class="card-body">
             <ul class="nav nav-justified mb-3">
                 <li class="nav-item">
@@ -46,63 +60,66 @@ $row = mysqli_fetch_assoc($query);
                 <div class="tab-pane" id="pills-register">
                     <form action="./functions/update.php" method="post">
                         <div class="text-center mb-3" style="color: white;">
+                            <!-- ID -->
+                            <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                             <!-- Firstname input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerName" name="fname" class="form-control"
-                                    value="<?php echo $row['firstname'] ?>" />
-                                <label class="form-label" for="registerName" style="color: grey;">Firstname</label>
+                                <input style="color: white;" type="text" id="registerFirstname" name="fname"
+                                    class="form-control" value="<?php echo $row['firstname'] ?>" />
+                                <label class="form-label" for="registerFirstname"
+                                    style="color: white;">Firstname</label>
                             </div>
 
                             <!-- Lastname input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerUsername" name="lname" class="form-control"
-                                    value="<?php echo $row['lastname'] ?>" />
-                                <label class="form-label" for="registerUsername" style="color: grey;">Lastname</label>
+                                <input style="color: white;" type="text" id="registerLastname" name="lname"
+                                    class="form-control" value="<?php echo $row['lastname'] ?>" />
+                                <label class="form-label" for="registerLastname" style="color: white;">Lastname</label>
                             </div>
-                            <!-- Gender Number input -->
+                            <!-- Gender Number input-->
                             <div class="row" style="margin-bottom: 1.5rem;">
                                 <div class="col">
                                     <div class="form-control" style="background-color: black;">
-                                        <label for="female" style="color: grey;">Female</label>
+                                        <label for="female" style="color: white;">Female</label>
                                         <a style="margin: 5px"></a>
-                                        <input type="radio" name="gender" value="Female" id="female" required="" <?php if ($row['gender'] == 'Female') {
-                                            echo "checked";
-                                        } ?>>
+                                        <input style="color: white;" type="radio" name="gender" value="Female"
+                                            id="female" required="" <?php if ($row['gender'] == 'Female') {
+                                                echo "checked";
+                                            } ?>>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-control" style="background-color: black;">
-                                        <label for="male" style="color: grey;">Male</label>
+                                        <label for="male" style="color: white;">Male</label>
                                         <a style="margin: 10px"></a>
-                                        <input type="radio" name="gender" value="Male" id="male" required="" <?php if ($row['gender'] == 'Male') {
-                                            echo "checked";
-                                        } ?>>
+                                        <input style="color: white;" type="radio" name="gender" value="Male" id="male"
+                                            required="" <?php if ($row['gender'] == 'Male') {
+                                                echo "checked";
+                                            } ?>>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Contact Number input -->
+                            <!-- Contact Number input style="color: white;" -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerEmail" name="contactnumber" class="form-control"
-                                    value="<?php echo $row['contact'] ?>" />
-                                <label class="form-label" for="registerEmail" style="color: grey;">Contact
+                                <input style="color: white;" type="text" id="registerContact" name="contactnumber"
+                                    class="form-control" value="<?php echo $row['contact'] ?>" maxlength="11" />
+                                <label class="form-label" for="registerContact" style="color: white;">Contact
                                     Number</label>
                             </div>
-                            <!-- Email input -->
+                            <!-- Email input style="color: white;" -->
                             <div class="form-outline mb-4">
-                                <input type="email" id="registerEmail" value="<?php echo $row['email'] ?>" name="email"
-                                    class="form-control" />
-                                <label class="form-label" for="registerEmail" style="color: grey;">Email</label>
+                                <input style="color: white;" type="email" id="registerEmail"
+                                    value="<?php echo $row['email'] ?>" name="email" class="form-control" />
+                                <label class="form-label" for="registerEmail" style="color: white;">Email</label>
                             </div>
-
-                            <!-- Password input -->
-                            <div class="form-outline mb-4">
-                                <input type="password" id="registerPassword" name="password" class="form-control"
-                                    value="<?php echo $row['password'] ?>" />
-                                <label class="form-label" for="registerPassword" style="color: grey;">Password</label>
-                            </div>
-                            <input type="hidden" name=id value="<?php echo $row['id']; ?>">
                             <!-- Submit button -->
-                            <button type="submit" name="update" class="btn btn-primary btn-block mb-3">Update</button>
+
+                            <button type="submit" name="update"
+                                class="btn btn-primary btn-block m-auto mb-3 s-5">Update</button>
+                            <a class="cancel" href="./main.php">
+                                Cancel
+                            </a>
+
                     </form>
                 </div>
             </div>
@@ -112,5 +129,15 @@ $row = mysqli_fetch_assoc($query);
 
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+<script>
+    const regex = new RegExp("[-0-9]");
+    const contact = document.getElementById('registerContact');
+    contact.addEventListener("beforeinput", (event) => {
+        console.log(contact.value);
+        if (event.data != null && !regex.test(event.data)) {
+            event.preventDefault();
+        }
+    });
+</script>
 
 </html>

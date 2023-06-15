@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
+if (empty($_SESSION['uesrname']) && empty($_SESSION['password'])) {
     header('location: login-signup.php');
 }
 ?>
@@ -12,80 +12,8 @@ if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrapV5.3.0/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrapV5.3.0/aboutus.css">
     <title>About Us</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-        }
-
-        html {
-            box-sizing: border-box;
-        }
-
-        *,
-        *:before,
-        *:after {
-            box-sizing: inherit;
-        }
-
-        .column {
-            float: left;
-            width: 33.3%;
-            margin-bottom: 16px;
-            padding: 0 8px;
-        }
-
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            margin: 8px;
-        }
-
-        .about-section {
-            padding: 50px;
-            text-align: center;
-            background-color: #474e5d;
-            color: white;
-        }
-
-        .container {
-            padding: 0 16px;
-        }
-
-        .container::after,
-        .row::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-
-        .title {
-            color: grey;
-        }
-
-        .button {
-            border: none;
-            outline: 0;
-            display: inline-block;
-            padding: 8px;
-            color: white;
-            background-color: #000;
-            text-align: center;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .button:hover {
-            background-color: #555;
-        }
-
-        @media screen and (max-width: 650px) {
-            .column {
-                width: 100%;
-                display: block;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -105,7 +33,7 @@ if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
             <p>Resize the browser window to see that this page is responsive by the way.</p> -->
     </div>
 
-    <h2 style="text-align:center">Our Team</h2>
+    <h2 style="text-align:center">Our Members</h2>
     <div class="row">
         <div class="column">
             <div class="card">
@@ -118,7 +46,8 @@ if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
                         HTML, CSS, and JavaScript, which are the fundamental building blocks of front-end development.
                     </p>
                     <p>jaymar.salas@csucc.edu.ph</p>
-                    <p><a href="https://www.facebook.com/jaymar.salas.52"><button class="button">Contact</button></a>
+                    <p><a href="https://www.facebook.com/jaymar.salas.52" target="_blank"><button
+                                class="button">Contact</button></a>
                     </p>
                 </div>
             </div>
@@ -137,7 +66,7 @@ if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
                         backend systems.</p>
                     <p>christiankyle.autor@csucc.edu.ph</p>
                     <p>
-                        <a href="https://www.facebook.com/riskyle14">
+                        <a href="https://www.facebook.com/riskyle14" target="_blank">
                             <button class="button">Contact</button></a>
                     </p>
                 </div>
@@ -155,8 +84,9 @@ if (empty($_SESSION['email']) && empty($_SESSION['email'])) {
                         database systems that efficiently handle large volumes of data.
                         <br>
                     </p>
-                    <p>lenard.losdoce@csucc.edu.ph</p>
-                    <p><a href="https://www.facebook.com/lenard.losdoceii"><button class="button">Contact</button></a>
+                    <p class="pt-4">lenard.losdoce@csucc.edu.ph</p>
+                    <p><a href="https://www.facebook.com/lenard.losdoceii" target="_blank"><button
+                                class="button">Contact</button></a>
                     </p>
                 </div>
             </div>

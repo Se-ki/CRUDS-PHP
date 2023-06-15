@@ -1,0 +1,12 @@
+body {
+    background-image: url('./img/hacker.gif');
+}
+
+.card {
+    background-color: transparent;
+    width: 18rem; 
+    position: relative; 
+    left: 40%; 
+    top: 15px; 
+    box-shadow: 0px 0px 2px 2px white;
+}

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_SESSION['email']) && !empty($_SESSION['email'])) {
+if (!empty($_SESSION['username']) && !empty($_SESSION['username'])) {
     header('location: main.php');
 }
 ?>
@@ -17,15 +17,23 @@ if (!empty($_SESSION['email']) && !empty($_SESSION['email'])) {
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: url('./img/loginhacker.gif');
+            text-transform: capitalize;
+        }
 
+        .card {
+            background-color: black;
+        }
+    </style>
 </head>
 <?php if (isset($_GET['err'])) { ?>
     <script>alert("<?php echo $_GET['err'] ?>")</script>
 <?php } ?>
 
 <body style="background-color:black;">
-    <div class="card"
-        style="width: 18rem; position: relative; left: 40%; top: 15px; background-color:black; box-shadow: 0px 0px 2px 2px white;">
+    <div class="card" style="width:30%; left: 35%; top: 15px; box-shadow: 0px 0px 2px 2px white;">
         <div class="card-body">
             <!-- Pills navs -->
             <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
@@ -47,16 +55,18 @@ if (!empty($_SESSION['email']) && !empty($_SESSION['email'])) {
                         <div class="text-center mb-3" style="color: white;">
                             <p>Sign in</p>
                         </div>
-                        <!-- Email input -->
+                        <!-- create username input -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="loginName" name="input-email" class="form-control" />
-                            <label class="form-label" for="loginName" style="color: grey;">Email</label>
+                            <input style="color: white;" type="text" id="loginUsername" name="input-username"
+                                class="form-control" />
+                            <label style="color: white;" class="form-label" for="loginUsername">Username</label>
                         </div>
 
-                        <!-- Password input -->
+                        <!-- create password input -->
                         <div class="form-outline mb-4">
-                            <input type="password" id="loginPassword" name="input-password" class="form-control" />
-                            <label class="form-label" for="loginPassword" style="color: grey;">Password</label>
+                            <input style="color: white;" type="password" id="loginPassword" name="input-password"
+                                class="form-control" />
+                            <label style="color: white;" class="form-label" for="loginPassword">Password</label>
                         </div>
 
                         <!-- Submit button -->
@@ -67,50 +77,30 @@ if (!empty($_SESSION['email']) && !empty($_SESSION['email'])) {
                     <form action="./functions/create.php" method="post">
                         <div class="text-center mb-3" style="color: white;">
                             <p>Sign up</p>
-                            <!-- Firstname input -->
+                            <!-- firstname input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerName" name="fname" class="form-control" />
-                                <label class="form-label" for="registerName" style="color: grey;">Firstname</label>
+                                <input style="color: white;" type="text" id="registerFirstname" name="firstname"
+                                    class="form-control" />
+                                <label style="color: white;" class="form-label"
+                                    for="registerFirstname">Firstname</label>
                             </div>
-
-                            <!-- Lastname input -->
+                            <!-- lastname input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerUsername" name="lname" class="form-control" />
-                                <label class="form-label" for="registerUsername" style="color: grey;">Lastname</label>
+                                <input style="color: white;" type="text" id="registerLastname" name="lastname"
+                                    class="form-control" />
+                                <label style="color: white;" class="form-label" for="registerLastname">Lastname</label>
                             </div>
-                            <!-- Gender Number input -->
-                            <div class="row" style="margin-bottom: 1.5rem;">
-                                <div class="col">
-                                    <div class="form-control" style="background-color: black;">
-                                        <label for="female" style="color: grey;">Female</label>
-                                        <a style="margin: 5px"></a>
-                                        <input type="radio" name="gender" value="Female" id="female" required="">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-control" style="background-color: black;">
-                                        <label for="male" style="color: grey;">Male</label>
-                                        <a style="margin: 10px"></a>
-                                        <input type="radio" name="gender" value="Male" id="male" required="">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Contact Number input -->
+                            <!-- username input -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="registerEmail" name="contactnumber" class="form-control" />
-                                <label class="form-label" for="registerEmail" style="color: grey;">Contact
-                                    Number</label>
+                                <input style="color: white;" type="text" id="registerUsername" name="username"
+                                    class="form-control" />
+                                <label style="color: white;" class="form-label" for="registerUsername">Username</label>
                             </div>
-                            <!-- Email input -->
+                            <!-- password input -->
                             <div class="form-outline mb-4">
-                                <input type="email" id="registerEmail" name="email" class="form-control" />
-                                <label class="form-label" for="registerEmail" style="color: grey;">Email</label>
-                            </div>
-
-                            <!-- Password input -->
-                            <div class="form-outline mb-4">
-                                <input type="password" id="registerPassword" name="password" class="form-control" />
-                                <label class="form-label" for="registerPassword" style="color: grey;">Password</label>
+                                <input style="color: white;" type="password" id="registerPassword" name="password"
+                                    class="form-control" />
+                                <label style="color: white;" class="form-label" for="registerPassword">Password</label>
                             </div>
                             <!-- Submit button -->
                             <button type="submit" name="signup" class="btn btn-primary btn-block mb-3">Sign up</button>
@@ -123,6 +113,16 @@ if (!empty($_SESSION['email']) && !empty($_SESSION['email'])) {
 
 </body>
 <!-- MDB -->
+<script>
+    const regex = new RegExp("[-0-9]");
+    const contact = document.getElementById('registerContact');
+    contact.addEventListener("beforeinput", (event) => {
+        console.log(contact.value);
+        if (event.data != null && !regex.test(event.data)) {
+            event.preventDefault();
+        }
+    });
+</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 
 </html>
